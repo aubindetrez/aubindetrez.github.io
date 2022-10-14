@@ -1,0 +1,68 @@
+body {
+	font-family: "Rubik", sans-serif;
+	text-align: justify;
+	font-size: 1.6rem;
+}
+h1 {
+	margin-top: 100px;
+	margin-bottom: 100px;
+	background: linear-gradient(191.12deg, #5c007c 0.01%, #090074 100.57%);
+	color: #dfcfe4;
+	top: 250px;
+	height: 250px;
+}
+.main {
+	font-size: "150%";
+}
+.content {
+	overflow-y: auto;
+	padding: 0 15px;
+	padding-bottom: 0px;
+	padding-bottom: 50px;
+	margin-top: 100px;
+	margin-bottom: 100px;
+	margin-right: 150px;
+	margin-left: 80px;
+}
+
+div.body {margin:25px;}
+
+div.polaroid {
+  width: 80%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+}
+
+div.container {
+  text-align: center;
+  padding: 10px 20px;
+}
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	height: 50%;
+}
+
+code {
+	font-family: monospace;
+	background-color: #eee;
+	border: 1px solid #999;
+	display: block;
+	padding: 20px;
+}
+
+li {
+	margin-bottom: 9px;
+}
+
+pre {
+	overflow-x: auto;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+}
