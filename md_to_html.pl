@@ -2,9 +2,17 @@
 
 my $num_args = @ARGV;
 
+# Format [text](something://...) into a <a href=...>
+sub format_link {
+	my $text = $_[0];
+	$text =~ s/\[([^\]\[]+)\]\(([^\(\)]+)\)/ <a href=\"\2\">\1<\/a>/g;
+	return $text;
+}
+
+# Format something://fsdfs/sdfs/sdfsd into a <a href=...>
 sub format_hypertext {
 	my $text = $_[0];
-	$text =~ s/[ ]([^ ]+):\/\/([^ ]+)/ <a href=\"\1:\/\/\2\">\2<\/a>/g;
+ 	$text =~ s/([^ ]+):\/\/([^ :+]+)/ <a href=\"\1:\/\/\2\">\2<\/a>/g;
 	return $text;
 }
 
@@ -115,7 +123,10 @@ sub convert_file {
 				print(OUTPUTF "<ul>");
 			}
 			$tmp = $1;
+            $tmp = format_link($tmp);
+            print("Format hypertext on list: $tmp\n");
 			$tmp = format_hypertext($tmp);
+            print("After hypertext on list: $tmp\n");
 			print(OUTPUTF "<li>$tmp</li>");
 		}
 		else {
@@ -128,6 +139,7 @@ sub convert_file {
 				$in_a_paragraph = 1;
 			}
 			$tmp = $line;
+            $tmp = format_link($tmp);
 			$tmp = format_hypertext($tmp);
 			print(OUTPUTF "$tmp<br />");
 		}
