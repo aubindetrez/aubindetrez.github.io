@@ -1,11 +1,11 @@
-<!DOCTYPE html><meta charset="UTF-8"><html><head><link rel="stylesheet" href="styles.css"></head><body id="main"><div id="content"><h1> Qemu and Linux kernel hacking</h1><p>We are going to compile Qemu (emulator) from source so we can modify it in an other tutorial.
+<!DOCTYPE html><meta charset="UTF-8"><html><head><link rel="stylesheet" href="styles.css"></head><body id="main"><div id="content"><hr><h1> Qemu and Linux kernel hacking</h1><hr><p>We are going to compile Qemu (emulator) from source so we can modify it in an other tutorial.
 <br />We will add a custom system call in the linux, compile the linux kernel, and finally write program to call our syscall (ramfs are usually used to start the actual system but we are going to write our own minimalist system).
 <br /></p><p>Objective: Get more familiar with the linux kernel environment/structure.
-<br /></p><h2> Setting up Qemu</h2><ul><li>Download QEmu:</li></ul><pre><code>wget https://download.qemu.org/qemu-5.1.0.tar.xz
+<br /></p><hr><h2> Setting up Qemu</h2><ul><li>Download QEmu:</li></ul><pre><code>wget https://download.qemu.org/qemu-5.1.0.tar.xz
 </code></pre><ul><li>Untar/Uncompress (keep the archive so you can revert your changes if needed):</li></ul><pre><code>tar xf ./qemu-5.1.0.tar.xz && cd
 qemu-5.1.0
 </code></pre><ul><li>Create a directory for your experimental Qemu: </li></ul><pre><code>mkdir ../qemu_bin
-</code></pre><ul><li>Check for dependencies for your platform <a href="https://wiki.qemu.org/Hosts/Linux">wiki.qemu.org/Hosts/Linux</a> </li><li>If you are on debian you can use:</li></ul><pre><code>sudo apt-get install git
+</code></pre><ul><li>Check for dependencies for your platform  <a href="https://wiki.qemu.org/Hosts/Linux">wiki.qemu.org/Hosts/Linux</a> </li><li>If you are on debian you can use:</li></ul><pre><code>sudo apt-get install git
 	   libglib2.0-dev libfdt-dev
 	   libpixman-1-dev
 	   zlib1g-dev
@@ -13,7 +13,7 @@ qemu-5.1.0
 </code></pre><ul><li>Make: </li></ul><pre><code>make
 </code></pre><p>Note: you can have a look at the next section while this is running
 <br /></p><ul><li>Install (in your test directory): </li></ul><pre><code>make install
-</code></pre><h2> Getting a Linux image</h2><p>If you want to learn more about creating your own embedded linux: <a href="https://wiki.gentoo.org/wiki/Custom_Initramfs">wiki.gentoo.org/wiki/Custom_Initramfs</a> | <a href="https://tldp.org/HOWTO/Bootdisk-HOWTO/x88.html">tldp.org/HOWTO/Bootdisk-HOWTO/x88.html</a> | <a href="https://tldp.org/HOWTO/From-PowerUp-To-Bash-Prompt-HOWTO.html">tldp.org/HOWTO/From-PowerUp-To-Bash-Prompt-HOWTO.html</a> | <a href="https://www.linuxfromscratch.org/lfs/view/stable/
+</code></pre><hr><h2> Getting a Linux image</h2><p>If you want to learn more about creating your own embedded linux:  <a href="https://wiki.gentoo.org/wiki/Custom_Initramfs">wiki.gentoo.org/wiki/Custom_Initramfs</a> |  <a href="https://tldp.org/HOWTO/Bootdisk-HOWTO/x88.html">tldp.org/HOWTO/Bootdisk-HOWTO/x88.html</a> |  <a href="https://tldp.org/HOWTO/From-PowerUp-To-Bash-Prompt-HOWTO.html">tldp.org/HOWTO/From-PowerUp-To-Bash-Prompt-HOWTO.html</a> |  <a href="https://www.linuxfromscratch.org/lfs/view/stable/
 ">www.linuxfromscratch.org/lfs/view/stable/
 </a><br /></p><ul><li>Get linux source code</li><li>Start with a default linux kernel config:</li></ul><pre><code>make defconfig # Get default config
 
@@ -52,7 +52,7 @@ CONFIG_VIRTIO_RING=y
 </code></pre><p>Get the screen from your Qemu VM:
 <br /></p><pre><code>vncviewer
 127.0.0.1::5900
-</code></pre><h2> Add a syscall in the linux kernel</h2><ul><li>arch/x86/entry/syscalls/syscall_64.tbl</li></ul><pre><code># After the last common entry
+</code></pre><hr><h2> Add a syscall in the linux kernel</h2><ul><li>arch/x86/entry/syscalls/syscall_64.tbl</li></ul><pre><code># After the last common entry
 447	common	hello	sys_hello
 
 </code></pre><ul><li>kernel/sys.c</li></ul><pre><code>struct __attribute__((__packed__)) filestat {
@@ -73,7 +73,7 @@ SYSCALL_DEFINE2(hello, const char*, path, struct filestat*, buf)
 	return 0;
 }
 
-</code></pre><h2> Write a C program calling this syscall</h2><p>You can learn more about syscall by reading the
+</code></pre><hr><h2> Write a C program calling this syscall</h2><p>You can learn more about syscall by reading the
 <br />manual: 
 <br /></p><pre><code>man –S 2 intro
 </code></pre><ul><li>test.c</li></ul><pre><code>#include <stdio.h>
@@ -108,10 +108,10 @@ int main(int argc, char* argv[])
 -initrd ./test.cpio.gz \
 -no-reboot \
 -nographic -append "console=ttyS0"
-</code></pre><h2> Write a syscall that does something</h2><p>By the time you read this I am very likely done with writing it, just ping me so I update it
-<br /></p><h2> Add instruction in Qemu</h2><p>You can learn more about Qemu insternals here: <a href="https://qemu.weilnetz.de/w32/2011/2011-10-28/qemu-tech.html">qemu.weilnetz.de/w32/2011/2011-10-28/qemu-tech.html</a> 
-<br /></p><h3> CPUID</h3><p>The CPUID instruction is used by software (on Intel CPU) to learn about the details of the processor.
-<br />Learn more on wikipedia: <a href="https://en.wikipedia.org/wiki/CPUID">en.wikipedia.org/wiki/CPUID</a> . This mechanism enable the software to check for accelerated hardware...
+</code></pre><hr><h2> Write a syscall that does something</h2><p>By the time you read this I am very likely done with writing it, just ping me so I update it
+<br /></p><hr><h2> Add instruction in Qemu</h2><p>You can learn more about Qemu insternals here:  <a href="https://qemu.weilnetz.de/w32/2011/2011-10-28/qemu-tech.html">qemu.weilnetz.de/w32/2011/2011-10-28/qemu-tech.html</a> 
+<br /></p><hr width="50%" align=left><h3> CPUID</h3><p>The CPUID instruction is used by software (on Intel CPU) to learn about the details of the processor.
+<br />Learn more on wikipedia:  <a href="https://en.wikipedia.org/wiki/CPUID">en.wikipedia.org/wiki/CPUID</a> . This mechanism enable the software to check for accelerated hardware...
 <br /></p><p>We will add an entry to CPUID, when called it should set the bit 10 of RDX.
 <br /></p><ul><li>Write a simple C program calling the cpuid instruction and checking the features: cpuid.c</li></ul><pre><code>#include <stdio.h>
 
@@ -183,8 +183,8 @@ int main(int argc, char** argv) {
 make install # install qemu in your experiment directory (../qemu_bin)
 ../qemu_bin/bin/qemu-x86_64 ./cpuid # qemu_i386 if your gcc is 32 bits
 # Should return: Hello feature OK
-</code></pre><h3> Opcode 0xF1</h3><p>We'll now change the behavior of opcode 0xF1 (In Circuit Emulator BreakPoint) to something else. As an example we'll make it set RAX (the accumulator) to 42.
-<br /></p><ul><li>Write a simple C program, calling the instruction and get some reference results</li></ul><p>More information about inline assembly here: <a href="https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html">gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html</a> 
+</code></pre><hr width="50%" align=left><h3> Opcode 0xF1</h3><p>We'll now change the behavior of opcode 0xF1 (In Circuit Emulator BreakPoint) to something else. As an example we'll make it set RAX (the accumulator) to 42.
+<br /></p><ul><li>Write a simple C program, calling the instruction and get some reference results</li></ul><p>More information about inline assembly here:  <a href="https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html">gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html</a> 
 <br /></p><pre><code>#include <stdio.h>
 
 int main(int argc, char** argv)
@@ -228,5 +228,5 @@ grep -nrw . --include=\*.h -m 1 -e "tcg_gen_mov_i64"
 	break;
 </code></pre><ul><li>It is time to try your changes</li></ul><pre><code>../qemu_bin/bin/qemu-x86_64 ./0xF1
 # You will get: "42 = 00000042" congratulation !
-</code></pre><ul><li>Optional: You can now add a more complete instruction, you could do matrix operation with the datas pointed by rsi and store the result in rdi (there are security considerations... but it would be a great exercise)</li></ul><h2> Create performance monitoring linux kernel module</h2><h2> Create a page fault profiler linux kernel module</h2><h2> Write a multi-threading library</h2><h2> Write your own CPU simulator using Qemu</h2><h2> Add GCC support for your own CPU</h2><h2> Further reading</h2><p>Understanding the Linux Kernel, Third Edition by Daniel P. Bovet, Marco Cesati Ph.D
+</code></pre><ul><li>Optional: You can now add a more complete instruction, you could do matrix operation with the datas pointed by rsi and store the result in rdi (there are security considerations... but it would be a great exercise)</li></ul><hr><h2> Create performance monitoring linux kernel module</h2><hr><h2> Create a page fault profiler linux kernel module</h2><hr><h2> Write a multi-threading library</h2><hr><h2> Write your own CPU simulator using Qemu</h2><hr><h2> Add GCC support for your own CPU</h2><hr><h2> Further reading</h2><p>Understanding the Linux Kernel, Third Edition by Daniel P. Bovet, Marco Cesati Ph.D
 <br /></div></body></html>

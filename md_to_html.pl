@@ -78,7 +78,7 @@ sub convert_file {
 				print(OUTPUTF "</p>");
 				$in_a_paragraph = 0;
 			}
-			print(OUTPUTF "<h1>$1</h1>");
+			print(OUTPUTF "<hr><h1>$1</h1><hr>");
 		}
 		elsif ( $line =~ m/^##([^#].*)$/) {
 			if ($in_a_list) {
@@ -89,7 +89,7 @@ sub convert_file {
 				print(OUTPUTF "</p>");
 				$in_a_paragraph = 0;
 			}
-			print(OUTPUTF "<h2>$1</h2>");
+			print(OUTPUTF "<hr><h2>$1</h2>");
 		}
 		elsif ( $line =~ m/^###([^#].*)$/) {
 			if ($in_a_list) {
@@ -100,7 +100,7 @@ sub convert_file {
 				print(OUTPUTF "</p>");
 				$in_a_paragraph = 0;
 			}
-			print(OUTPUTF "<h3>$1</h3>");
+			print(OUTPUTF "<hr width=\"50%\" align=left><h3>$1</h3>");
 		}
 		elsif ( $line =~ m/^####(.*)$/) {
 			if ($in_a_list) {
@@ -124,9 +124,7 @@ sub convert_file {
 			}
 			$tmp = $1;
             $tmp = format_link($tmp);
-            print("Format hypertext on list: $tmp\n");
 			$tmp = format_hypertext($tmp);
-            print("After hypertext on list: $tmp\n");
 			print(OUTPUTF "<li>$tmp</li>");
 		}
 		else {
