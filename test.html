@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <script defer>
+            var data = {
+                'valid': false,
+            };
+            const file = "file.txt"
+
+            function filter() {
+                console.log(data.b.value)
+                const re = new RegExp(data.b.value)
+                var lines = document.getElementsByClassName("line")
+                console.log("Number of lines: "+lines.length)
+                var line = 0;
+                while (line < lines.length) {
+                    console.log("Line "+line)
+                    console.log(lines[line])
+                    const res = re.exec(lines[line].innerText)
+                    if (res !== null) {
+                        console.log("delete")
+                        lines[line].parentNode.removeChild(lines[line])
+                    } else {
+                        line++
+                    }
+                }
+
+            }
+            function resetFile() {
+                // Clear and Re-read file
+                while (data.a.firstChild) { data.a.removeChild(data.a.firstChild); }
+                readFile();
+            }
+            function readFile() {
+                fetch(file)
+                    .then(response => response.text())
+                    .then(text => {
+                        var lines = text.split('\n')
+                        for (var line = 0; line < lines.length; line++) {
+                            var c = document.createElement('div') // Create a div for each line
+                            c.classList.add('line')
+                            c.innerText = lines[line]
+                            data.a.appendChild(c)
+                        }
+                    })
+            }
+            window.onload = function() {
+                data.a = document.getElementById("file") // Where to write the lines
+                data.b = document.getElementById("pattern")
+                data.valid = true
+
+                // Trigger button on click
+                data.b.addEventListener("keypress", function(event) {
+                        if (event.key === "Enter") {
+                            event.preventDefault();
+                            data.b.click();
+                        }
+                    });
+
+                readFile()
+            };
+        </script>
+    </head>
+    <body id="main">
+        <div id="content">
+            <hr>
+            <h1> Experimental page </h1>
+            <hr>
+            <p>Blah blah</p>
+                <div id="file" class="box">
+                </div>
+                <div horizontal layout>
+                    <input type="text" id="pattern">
+                    <button onclick="filter()">Filter</button>
+                </div>
+                <button onclick="resetFile()">Reset</button>
+            <hr>
+        </div>
+    </body>
+</html>
+

@@ -56,6 +56,10 @@ li {
 	margin-bottom: 9px;
 }
 
+.box {
+    border-style: solid;
+}
+
 pre {
 	overflow-x: auto;
 	white-space: pre-wrap;
@@ -63,4 +67,8 @@ pre {
 	white-space: -pre-wrap;
 	white-space: -o-pre-wrap;
 	word-wrap: break-word;
+}
+
+div.line:hover {
+    background-color: yellow;
 }
